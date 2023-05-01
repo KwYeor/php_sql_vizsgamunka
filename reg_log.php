@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 class Db
 {
     private $host = "localhost";
@@ -71,28 +73,3 @@ if ($loggedIn) {
 } else {
     echo "Hibás felhasználónév vagy jelszó";
 }
-
-/*Az Database osztály tartalmazza az adatbáziskapcsolatot és a 
-kapcsolat bezárását végző függvényt. Az osztályváltozók és metódusok 
-private vagy protected, hogy csak az osztály belül vagy az osztály 
-leszármazottaiban legyenek láthatók.
-
-Az Registration osztály a felhasználók regisztrációját végző függvényt 
-tartalmazza. Az osztály extends Database utasítással örököli az 
-adatbáziskapcsolatot és a kapcsolat bezárását végző függvény 
-A $hashedPassword változó létrehozása a Registration osztály registerUser() 
-metódusában történik. Ez a változó a felhasználó jelszavát titkosítja a 
-password_hash() függvénnyel, amely az alapértelmezett algoritmust használja a 
-jelszó biztonságos tárolásához. Az algoritmus kiválasztása a PASSWORD_DEFAULT 
-konstans használatával történik.
-
-A password_hash() függvény a jelszó egy irreverzibilis hash értékét adja vissza, 
-amelyet a szerveren tárolnak, és amelyet nem lehet visszafejteni a tényleges jelszóra. 
-Ez biztonságosabbá teszi a felhasználó jelszavának tárolását, mivel még akkor sem 
-lehet megtudni a jelszót, ha valamilyen módon sikerült megszerezni a titkosított 
-jelszót.
-
-A $hashedPassword értéke aztán bekerül a $stmt objektum által előkészített és a 
-bind_param() metódussal behelyettesített adatok közé, amelyeket az adatbázisba 
-küldenek a felhasználó regisztrációjakor. A jelszó ezen a ponton már titkosítva van, 
-és biztonságosan tárolható az adatbázisban.*/
