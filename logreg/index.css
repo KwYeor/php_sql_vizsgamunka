@@ -3,7 +3,7 @@ form {
   }
   
   /* Full-width inputs */
-  input[type=text], input[type=password] {
+  input[type=text], input[type=password], #id {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -40,11 +40,11 @@ form {
     text-align: center;
     margin: 24px 0 12px 0;
   }
-  
-  /* Avatar image */
-  img.avatar {
-    width: 40%;
-    border-radius: 50%;
+  .error{
+    background-color: #f44336;
+    color: #ccc;
+    padding: 4px;
+    text-align: center;
   }
   
   /* Add padding to containers */
