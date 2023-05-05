@@ -51,6 +51,8 @@ class User extends DbConnection
 }
 class Reg extends DbConnection
 {
+    public $password = "123456";
+
     private $salt = 'xXxX';
     function regUser($name, $nickname, $phone, $email, $intro, $psw)
     {

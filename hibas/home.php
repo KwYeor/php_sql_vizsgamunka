@@ -1,7 +1,6 @@
 <?php
 session_start();
-//return to login if not logged in
-//print_r ($_SESSION);
+//ha nincs belépve, menjen vissza az indexre
 if (!isset($_SESSION['user']) || (trim($_SESSION['user']) == '')) {
     header('location:index.php');
 }
@@ -10,7 +9,7 @@ require_once('User.php');
 
 $user = new User();
 
-//fetch user data
+//tag adatok bekérése
 $sql = "SELECT * FROM tag WHERE id = '" . $_SESSION['user'] . "'";
 $row = $user->details($sql);
 

@@ -1,11 +1,8 @@
 <?php
+require_once('user.php');
 
-session_start();
+$regUser = new Reg();
 
-//ha be van jeletkezve, átirányít a home-ba
-if (isset($_SESSION['user'])) {
-    header('location:home.php');
-}
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -34,19 +31,35 @@ if (isset($_SESSION['user'])) {
                 <div class="row">
                     <div class="col-12">
                         <br>
-                        <h3 class="header-title">Bejelentkezés</h3>
-                        <form class="login-form" method="POST" action="login.php">
+                        <h3 class="header-title">Regisztráció</h3>
+                        <form class="login-form" method="POST" action="registration.php">
                             <div class="form-group">
                                 <input class="form-control" placeholder="Becenév" type="text" name="username" autofocus required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Teljes név" type="text" name="fullname" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Telefon" type="text" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Email" type="text" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Pár szó magadról és a motorodról:" name="intro" cols="30" rows="10" required></textarea>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Jelszó" type="password" name="password" required>
                             </div>
                             <div class="form-group">
-                                <button type="submit" name="login" class="btn btn-lg btn-primary btn-block">Bejelentkezés</button>
+                                <input class="form-control" placeholder="Jelszó újra" type="password" name="repassword" required>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" name="send" class="btn btn-lg btn-primary btn-block">Elküld</button>
                             </div>
                             <div class="form-group">
-                                <div class="text-center">Jelentkeznél közénk? <a href="registration.php">Regisztrálj!</a></div>
+                                <div class="text-center">Már regisztráltál? <a href="index.php">Jelentkezz be!</a></div>
                             </div>
                         </form>
                         <?php
