@@ -8,7 +8,7 @@ class DbConnection
     private $password = '';
     private $database = 'tura';
 
-    protected $connection;
+    public $connection;
 
     public function __construct()
     {

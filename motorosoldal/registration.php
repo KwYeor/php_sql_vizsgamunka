@@ -1,7 +1,30 @@
 <?php
+session_start();
 require_once('user.php');
+// a form nem enged kitöltetlen mezőt, így elegendő ellenőrizni, hogy van e POST
+if (isset($_POST['send'])) {
 
-$regUser = new Reg();
+    $fullname = filter_var($_POST['name'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $username = filter_var($_POST['username'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $phone = filter_var($_POST['phone'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    $intro = filter_var($_POST['intro'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $psw = $_POST['psw'];
+    $repsw = $_POST['repsw'];
+    if ($psw == $repsw) {
+        $reg = new Reg();
+        if ($reg->regUser($fullname, $username, $phone, $email, $intro, $psw)) {
+            $_SESSION['message'] = "Sikeres regisztráció!";
+        } else {
+            $_SESSION['message'] = "Sikertelen regisztráció!";
+        }
+    } else {
+        $_SESSION['message'] = "A megadott jelszavak nem egyeznek!";
+    }
+    header('Location: index.php');
+    exit;
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -37,22 +60,22 @@ $regUser = new Reg();
                                 <input class="form-control" placeholder="Becenév" type="text" name="username" autofocus required>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Teljes név" type="text" name="fullname" required>
+                                <input class="form-control" placeholder="Teljes név" type="text" name="name" required>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Telefon" type="text" name="phone" required>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Email" type="text" name="email" required>
+                                <input class="form-control" placeholder="Email" type="email" name="email" required>
                             </div>
                             <div class="form-group">
                                 <textarea class="form-control" placeholder="Pár szó magadról és a motorodról:" name="intro" cols="30" rows="10" required></textarea>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Jelszó" type="password" name="password" required>
+                                <input class="form-control" placeholder="Jelszó" type="password" name="psw" required>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Jelszó újra" type="password" name="repassword" required>
+                                <input class="form-control" placeholder="Jelszó újra" type="password" name="repsw" required>
                             </div>
 
                             <div class="form-group">
