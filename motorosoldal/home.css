@@ -1,0 +1,224 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Add a gray background color with some padding */
+  body {
+    font-family: Arial;
+    padding: 20px;
+    background: grey;
+  }
+  
+  /* Header/Blog Title */
+  .header {
+    padding: 30px;
+    font-size: 6vw;    
+    text-align: center;
+    background: black;
+    color: #f1f1f1;
+    border:solid chartreuse;
+    border-radius: 8px;
+    font-family: Impact,'Arial Narrow Bold', sans-serif;
+
+  }
+  .fejlec{display: grid;height: 100px;}
+  .hello{width: 30%;
+    float: left;
+    border:solid chartreuse;
+    color: white;
+    background-color: black;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 2px 1px;
+    cursor: pointer;
+}
+  .logout {
+    float: right;
+    width: 20%;
+    border:solid chartreuse;
+    color: white;
+    background-color: black;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 2px 1px;
+    cursor: pointer;
+  }
+  
+  /* Create two unequal columns that floats next to each other */
+  /* Left column */
+  .leftcolumn {   
+    float: left;
+    width: 75%;
+    background-color: yellow;
+    border:solid chartreuse;
+    border-radius: 8px;
+
+
+  }
+  
+  /* Right column */
+  .rightcolumn {
+    float: left;
+    width: 25%;
+    padding-left: 20px;
+    background-color: black;
+    color: #f1f1f1;
+    border:solid chartreuse;
+    border-radius: 8px;
+
+
+  }
+  
+  /* Fake image */
+  .fakeimg {
+    background-color: #aaa;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  /* Add a card effect for articles 
+  .card {
+     background-color: lightblue;
+     padding: 20px;
+     margin-top: 20px;
+  }*/
+
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Footer */
+  .footer {
+    padding: 20px;
+    text-align: center;
+    background-color: black;
+    color: #f1f1f1;
+    margin-top: 20px;
+    border:solid chartreuse;
+    border-radius: 8px;
+
+  }
+  
+  /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 800px) {
+    .leftcolumn, .rightcolumn {   
+      width: 100%;
+      padding: 0;
+    }
+  }
+  /* full page tabs*/
+  .card {box-sizing: border-box}
+
+  /* Set height of body and the document to 100% */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+  }
+  
+  /* Style tab links */
+  .tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: solid black black green;
+    border-radius: 8x;
+    outline: none;
+    cursor: pointer;
+    padding: 8px 0px 8px 2px;
+    font-size: 17px;
+    width: 20%;
+  }
+  
+  .tablink:hover {
+    background-color: #777;
+  }
+  
+  /* Style the tab content (and add height:100% for full page content) */
+  .tabcontent {
+    color: white;
+    border-radius: 8x;
+
+    display: none;
+    padding: 40px 20px;
+    height: 100%;
+  }
+  
+  #Home {background-color: #132614;}
+  #News {background-color: #26381B;}
+  #Contact {background-color: #2F440D}
+  #About {background-color: #344D2D;}
+  #POI {background-color: #3B5738;}
+
+  /*.tura_collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+  
+  .tura_active, .tura_collapsible:hover {
+    background-color: #555;
+  }
+  
+  .tura_collapsible:after {
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+  }
+  
+  .tura_active:after {
+    content: "\2212";
+  }
+  
+  .tura_content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+  }
+  */
+  .accordion {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border:solid chartreuse;
+    border-radius: 8px;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+  }
+  
+  .active, .accordion:hover {
+    background-color: black;
+    color: chartreuse; 
+  }
+  
+  .panel {
+    padding: 0 18px;
+    display: none;
+    background-color: black;
+    color: chartreuse; 
+    border:solid chartreuse;
+    border-radius: 8px;
+    overflow: hidden;
+  }
