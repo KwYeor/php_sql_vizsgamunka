@@ -32,5 +32,4 @@ class DbConnection
         if ($this->connection->query($sql) !== true) die($this->connection->error);
     }
 }
-
 ?>

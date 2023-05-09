@@ -1,0 +1,49 @@
+<div id="News" class="tabcontent">
+    <h1>Túrák</h1>
+    <?php foreach ($turak as $tura) : ?>
+        <table>
+            <tr>
+                <th>Esemény neve:</th>
+                <td><?php echo $tura['esemenynev']; ?></td>
+            </tr>
+            <tr>
+                <th>Dátum:</th>
+                <td><?php echo $tura['esemeny_datuma']; ?></td>
+            </tr>
+            <tr>
+                <th>Szervező:</th>
+                <td><?php echo $tura['becenev']; ?></td>
+            </tr>
+            <tr>
+                <th>Leírás:</th>
+                <td><?php echo $tura['esemeny_leiras']; ?></td>
+            </tr>
+            <tr>
+                <th>
+                    <form action="user.php" method="POST">Jelentkezés</form>
+                    <input type="radio" id="igen" name="jelentkezes" value="igen">
+                    <label for="igen">Ott leszek!</label><br>
+                    <input type="radio" id="talan" name="jelentkezes" value="talan">
+                    <label for="talan">Talán</label><br>
+                    <input type="radio" id="nem" name="jelentkezes" value="nem">
+                    <label for="nem">Sajnos kihagyom</label>
+                </th>
+                <td>
+                    <textarea name="komment" id="komment" cols="30" rows="3" placeholder="megjegyzés:"></textarea>
+                    <input type="submit" value="küldés">
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </table>
+        <div>
+            <h5>Eddigi jelentkezések:</h5>
+            <table>
+                <tr>
+                    <td>név</td>
+                    <td>válasz</td>
+                    <td>megjegyzés</td>
+                </tr>
+            </table>
+        </div>
+</div>
+</div>

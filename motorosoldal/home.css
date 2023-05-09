@@ -52,7 +52,7 @@
   /* Left column */
   .leftcolumn {   
     float: left;
-    width: 75%;
+    width: 70%;
     background-color: yellow;
     border:solid chartreuse;
     border-radius: 8px;
@@ -63,7 +63,7 @@
   /* Right column */
   .rightcolumn {
     float: left;
-    width: 25%;
+    width: 20%;
     padding-left: 20px;
     background-color: black;
     color: #f1f1f1;
@@ -158,42 +158,6 @@
   #About {background-color: #344D2D;}
   #POI {background-color: #3B5738;}
 
-  /*.tura_collapsible {
-    background-color: #777;
-    color: white;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-  }
-  
-  .tura_active, .tura_collapsible:hover {
-    background-color: #555;
-  }
-  
-  .tura_collapsible:after {
-    content: '\002B';
-    color: white;
-    font-weight: bold;
-    float: right;
-    margin-left: 5px;
-  }
-  
-  .tura_active:after {
-    content: "\2212";
-  }
-  
-  .tura_content {
-    padding: 0 18px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease-out;
-    background-color: #f1f1f1;
-  }
-  */
   .accordion {
     background-color: black;
     color: white;
@@ -222,3 +186,16 @@
     border-radius: 8px;
     overflow: hidden;
   }
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even){background-color: #f2f2f2}
