@@ -52,7 +52,7 @@ class Tag
     public function getTagok(): array
     {
         $sql = "SELECT * FROM tag AS t
-                ORDER BY id DESC";
+                ORDER BY id ASC";
         return $this->database->getResultArray($sql);
     }
 }
@@ -73,5 +73,23 @@ class Jelentkezes
         LEFT JOIN esemeny AS e ON(j.esemeny_id = e.id)
         ORDER BY esemeny_datuma DESC, valasz ASC";
         return $this->database->getResultArray($sql);
+    }
+}
+class Szervezo extends DbConnection
+{
+    function setTura($szervezo, $esemeny, $datum, $leir)
+    {
+        $stmt = $this->connection->prepare("INSERT INTO esemeny (esemenynev,
+                                                                esemeny_datuma,
+                                                                esemeny_leiras,
+                                                                tag_id )
+                                            VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $szervezo, $esemeny, $datum, $leir);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -28,18 +28,6 @@ $tagok = $tag->getTagok();
 $jelentkezes = new Jelentkezes();
 $jelentkezesek = $jelentkezes->getJelentkezesek();
 
-$kiir = new Szervezo();
-
-if (isset($_POST['send'])) {
-    $szervezo = $_SESSION['user'];
-    $esemeny = filter_var($_POST['esemeny'], FILTER_SANITIZE_ADD_SLASHES);
-    $datum = filter_var($_POST['datum'], FILTER_SANITIZE_ADD_SLASHES);
-    $leir = filter_var($_POST['leir'], FILTER_SANITIZE_ADD_SLASHES);
-} else {
-    $_SESSION['message'] .= 'Nem sikerült a feltöltés';
-}
-
-
 
 ?>
 <!DOCTYPE html>
@@ -66,10 +54,10 @@ if (isset($_POST['send'])) {
     <div class="row">
         <div class="leftcolumn">
             <div class="card">
-                <button class="tablink" onclick="openPage('Home', this, '#132614')">Főoldal</button>
+                <button class="tablink" onclick="openPage('Home', this, '#132614')" id="defaultOpen">Főoldal</button>
                 <button class="tablink" onclick="openPage('News', this, '#26381B')">Túrák</button>
                 <button class="tablink" onclick="openPage('Contact', this, '#2F440D')">Szervező</button>
-                <button class="tablink" onclick="openPage('About', this, '#344D2D')" id="defaultOpen">Tagok</button>
+                <button class="tablink" onclick="openPage('About', this, '#344D2D')">Tagok</button>
                 <button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>
 
                 <div id="Home" class="tabcontent">
@@ -90,70 +78,81 @@ if (isset($_POST['send'])) {
                         <table>
                             <tr>
                                 <th>Esemény neve:</th>
-                                <th><?php echo $tura['esemenynev']; ?></th>
-
-                                </th>
-
+                                <td><?php echo $tura['esemenynev']; ?></td>
                             </tr>
                             <tr>
                                 <th>Dátum:</th>
-                                <th><?php echo $tura['esemeny_datuma']; ?></th>
+                                <td><?php echo $tura['esemeny_datuma']; ?></td>
                             </tr>
                             <tr>
                                 <th>Szervező:</th>
-                                <th><?php echo $tura['becenev']; ?></th>
+                                <td><?php echo $tura['becenev']; ?></td>
                             </tr>
                             <tr>
                                 <th>Leírás:</th>
-                                <th><?php echo $tura['esemeny_leiras']; ?></th>
+                                <td><?php echo $tura['esemeny_leiras']; ?></td>
                             </tr>
+                            <tr>
+                                <th>
+                                    <form action="user.php" method="POST">Jelentkezés</form>
+                                    <input type="radio" id="igen" name="jelentkezes" value="igen">
+                                    <label for="igen">Ott leszek!</label><br>
+                                    <input type="radio" id="talan" name="jelentkezes" value="talan">
+                                    <label for="talan">Talán</label><br>
+                                    <input type="radio" id="nem" name="jelentkezes" value="nem">
+                                    <label for="nem">Sajnos kihagyom</label>
+                                </th>
+                                <td>
+                                    <textarea name="komment" id="komment" cols="25" rows="4" placeholder="megjegyzés:"></textarea>
+                                    <input type="submit" value="küldés">
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                         </table>
-                        <h5>Eddigi jelentkezések:</h5>
-                        <?php
-                        $jelentkezesek_tura_szerint = array_filter($jelentkezesek, function ($jelentkezes) use ($tura) {
-                            return $jelentkezes['esemenynev'] == $tura['esemenynev'];
-                        });
-                        ?>
-                        <?php if (!empty($jelentkezesek_tura_szerint)) : ?>
-                            <h3>esemény: <?php echo $tura['esemenynev']; ?></h3>
-                            <?php foreach ($jelentkezesek_tura_szerint as $jelentkezes) : ?>
+                        <div>
+                            <h5>Eddigi jelentkezések:</h5>
+                            <?php foreach ($jelentkezesek as $jelentkezes) : ?>
+                                <h3>esemény: <?php echo $jelentkezes['esemenynev']; ?></h3>
+
                                 <h3>név</h3>
                                 <p><?php echo $jelentkezes['becenev']; ?></p>
+
                                 <h3>válasz</h3>
                                 <p><?php echo $jelentkezes['valasz']; ?></p>
+
                                 <h3>megjegyzés</h3>
                                 <p><?php echo $jelentkezes['tag_megjegyzes']; ?></p>
+
+
                             <?php endforeach; ?>
-                        <?php else : ?>
-                            <p>Nincs jelentkezés</p>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                        </div>
                 </div>
-                <div id="Contact" class="tabcontent">
-                    <h3>Szervező</h3>
-                    <form class="login-form" action="user.php" method="POST"></form>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Szervező:" type="text" name="szervezo" required>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Esemény neve:" type="text" name="esemeny" required>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Esemény dátuma:" type="date" name="datum" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" placeholder="Esemény leírása:" name="leir" cols="30" rows="10" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" name="send" class="btn btn-lg btn-primary btn-block">Elküld</button>
-                    </div>
-                    <p><?php $_SESSION['message'] ?></p>
+            </div>
 
+            <div id="Contact" class="tabcontent">
+                <h3>Szervező</h3>
+                <form class="login-form" action="adatkezelo.php" method="POST"></form>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Szervező:" type="text" name="szervezo" required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Esemény neve:" type="text" name="esemeny" required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Esemény dátuma:" type="date" name="datum" required>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" placeholder="Esemény leírása:" name="leir" cols="30" rows="10" required></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" name="send" class="btn btn-lg btn-primary btn-block">Elküld</button>
                 </div>
 
-                <div id="About" class="tabcontent">
-                    <h3>Tagok</h3>
+            </div>
 
+            <div id="About" class="tabcontent">
+                <h3>Tagok</h3>
+                <?php foreach ($tagok as $tag) : ?>
 
                     <div style="overflow-x:auto;">
                         <table>
@@ -164,15 +163,14 @@ if (isset($_POST['send'])) {
                                 <th>Email</th>
                                 <th>Bemutatkozás</th>
                             </tr>
-                            <?php foreach ($tagok as $tag) : ?>
-                                <tr>
-                                    <td><?php echo $tag['becenev']; ?></td>
-                                    <td><?php echo $tag['nev']; ?></td>
-                                    <td><?php echo $tag['telefon']; ?></td>
-                                    <td><?php echo $tag['email']; ?></td>
-                                    <td><?php echo $tag['bemutatkozas']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
+                            <tr>
+                                <td><?php echo $tag['becenev']; ?></td>
+                                <td><?php echo $tag['nev']; ?></td>
+                                <td><?php echo $tag['telefon']; ?></td>
+                                <td><?php echo $tag['email']; ?></td>
+                                <td><?php echo $tag['bemutatkozas']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
 
                     </div>
 
@@ -185,28 +183,31 @@ if (isset($_POST['send'])) {
                     </div>
 
 
-                </div>
-            </div>
-            <div class="rightcolumn">
-                <div class="card">
-                    <h2>Zene:</h2>
-                    <div class="fakeimg" style="height:100px;">Image</div>
-                    <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-                </div>
-                <div class="card">
-                    <h3>Hasznos linkek:</h3>
-                    <div class="fakeimg">Image</div><br>
-                    <div class="fakeimg">Image</div><br>
-                    <div class="fakeimg">Image</div>
-                </div>
-                <div class="card">
-                    <h3>Kell ez ide?</h3>
-                    <p>Some text..</p>
-                </div>
             </div>
         </div>
-        <?php require_once('footer.php'); ?>
+        <div class="rightcolumn">
+            <div class="card">
+                <h2>Zene:</h2>
+                <div class="fakeimg" style="height:100px;">Image</div>
+                <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+            </div>
+            <div class="card">
+                <h3>Hasznos linkek:</h3>
+                <div class="fakeimg">Image</div><br>
+                <div class="fakeimg">Image</div><br>
+                <div class="fakeimg">Image</div>
+            </div>
+            <div class="card">
+                <h3>Kell ez ide?</h3>
+                <p>Some text..</p>
+            </div>
+        </div>
+    </div>
 
+    <div class="footer">
+        <h2>Footer</h2>
+    </div>
+    <script src="./home.js"></script>
 </body>
 
 </html>
@@ -231,3 +232,15 @@ if (isset($_POST['send'])) {
 <!--https://www.w3schools.com/howto/howto_css_social_media_buttons.asp-->
 <!--https://www.w3schools.com/howto/howto_js_scroll_to_top.asp-->
 <!--https://www.w3schools.com/howto/howto_js_image_grid.asp-->
+
+<!--if ($result1 = $this->connection->query("SELECT * FROM esemeny AS e
+LEFT JOIN tag AS t ON(e.tag_id = t.id)
+ORDER BY esemeny_datuma DESC")) {
+    if ($result1->num_rows) {
+        $row1 = $result1->fetch_assoc();
+        foreach ($row1 as $key => $record) {
+        }
+    }
+}
+$tura->getTura();
+-->
