@@ -77,19 +77,32 @@ class Jelentkezes
 }
 class Szervezo extends DbConnection
 {
-    function setTura($szervezo, $esemeny, $datum, $leir)
+    public function setTura()
     {
-        $stmt = $this->connection->prepare("INSERT INTO esemeny (esemenynev,
-                                                                esemeny_datuma,
-                                                                esemeny_leiras,
-                                                                tag_id )
-                                            VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $szervezo, $esemeny, $datum, $leir);
+        if (isset($_POST['send'])) {
+            $esemeny = filter_var($_POST['esemeny'], FILTER_SANITIZE_ADD_SLASHES);
+            $datum = filter_var($_POST['datum'], FILTER_SANITIZE_ADD_SLASHES);
+            $leir = filter_var($_POST['leir'], FILTER_SANITIZE_ADD_SLASHES);
+            $szervezo = $_SESSION['user'];
 
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
+
+            $sql2 = "INSERT INTO esemeny (id,
+                                        esemenynev,
+                                        esemeny_datuma,
+                                        esemeny_leiras,
+                                        tag_id) 
+                            VALUES ('',
+                                    '$esemeny',
+                                    '$datum',
+                                    '$leir',                                   
+                                    '$szervezo')";
+            $result2 = $this->connection->query($sql2);
+
+            if ($result2) {
+                echo "A esemény sikeresen feltöltve!";
+            } else {
+                echo "Adatfeltöltési hiba " . $this->connection->error;
+            }
         }
     }
 }

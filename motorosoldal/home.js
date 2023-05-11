@@ -29,3 +29,6 @@ for (j = 0; j < acc.length; j++) {
     }
   });
 }
+function formReset() {
+  document.getElementById("myForm").reset();
+}

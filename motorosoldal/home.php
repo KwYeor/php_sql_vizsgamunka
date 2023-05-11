@@ -29,18 +29,7 @@ $jelentkezes = new Jelentkezes();
 $jelentkezesek = $jelentkezes->getJelentkezesek();
 
 $kiir = new Szervezo();
-
-if (isset($_POST['send'])) {
-    $szervezo = $_SESSION['user'];
-    $esemeny = filter_var($_POST['esemeny'], FILTER_SANITIZE_ADD_SLASHES);
-    $datum = filter_var($_POST['datum'], FILTER_SANITIZE_ADD_SLASHES);
-    $leir = filter_var($_POST['leir'], FILTER_SANITIZE_ADD_SLASHES);
-} else {
-    $_SESSION['message'] .= 'Nem sikerült a feltöltés';
-}
-
-
-
+$kiir->setTura();
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -67,9 +56,9 @@ if (isset($_POST['send'])) {
         <div class="leftcolumn">
             <div class="card">
                 <button class="tablink" onclick="openPage('Home', this, '#132614')">Főoldal</button>
-                <button class="tablink" onclick="openPage('News', this, '#26381B')">Túrák</button>
-                <button class="tablink" onclick="openPage('Contact', this, '#2F440D')">Szervező</button>
-                <button class="tablink" onclick="openPage('About', this, '#344D2D')" id="defaultOpen">Tagok</button>
+                <button class="tablink" onclick="openPage('News', this, '#26381B')" id="defaultOpen">Túrák</button>
+                <button class="tablink" onclick="openPage('Contact', this, '#2F440D')" id="defaultOpen">Szervező</button>
+                <button class="tablink" onclick="openPage('About', this, '#344D2D')">Tagok</button>
                 <button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>
 
                 <div id="Home" class="tabcontent">
@@ -97,7 +86,8 @@ if (isset($_POST['send'])) {
                             </tr>
                             <tr>
                                 <th>Dátum:</th>
-                                <th><?php echo $tura['esemeny_datuma']; ?></th>
+                                <th><?php echo $tura['esemeny_datuma']; ?>
+                                </th>
                             </tr>
                             <tr>
                                 <th>Szervező:</th>
@@ -108,21 +98,21 @@ if (isset($_POST['send'])) {
                                 <th><?php echo $tura['esemeny_leiras']; ?></th>
                             </tr>
                         </table>
-                        <h5>Eddigi jelentkezések:</h5>
+                        <h5>Eddigi visszajelzések:</h5>
                         <?php
                         $jelentkezesek_tura_szerint = array_filter($jelentkezesek, function ($jelentkezes) use ($tura) {
                             return $jelentkezes['esemenynev'] == $tura['esemenynev'];
                         });
                         ?>
                         <?php if (!empty($jelentkezesek_tura_szerint)) : ?>
-                            <h3>esemény: <?php echo $tura['esemenynev']; ?></h3>
+                            <!-- <h3>esemény: <?php echo $tura['esemenynev']; ?></h3>-->
                             <?php foreach ($jelentkezesek_tura_szerint as $jelentkezes) : ?>
-                                <h3>név</h3>
-                                <p><?php echo $jelentkezes['becenev']; ?></p>
-                                <h3>válasz</h3>
-                                <p><?php echo $jelentkezes['valasz']; ?></p>
-                                <h3>megjegyzés</h3>
-                                <p><?php echo $jelentkezes['tag_megjegyzes']; ?></p>
+                                <!--<h3>név</h3>-->
+                                <p><?php echo $jelentkezes['becenev'] . ": " . $jelentkezes['valasz'] . "   ( " . $jelentkezes['tag_megjegyzes'] . " )"; ?></p>
+                                <!--<h3>válasz</h3>
+                                <p><?php echo $jelentkezes['valasz']; ?>/</p>
+                                <!--<h3>megjegyzés</h3>
+                                <p><?php echo $jelentkezes['tag_megjegyzes']; ?>/</p>-->
                             <?php endforeach; ?>
                         <?php else : ?>
                             <p>Nincs jelentkezés</p>
@@ -131,31 +121,30 @@ if (isset($_POST['send'])) {
                 </div>
                 <div id="Contact" class="tabcontent">
                     <h3>Szervező</h3>
-                    <form class="login-form" action="user.php" method="POST"></form>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Szervező:" type="text" name="szervezo" required>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Esemény neve:" type="text" name="esemeny" required>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Esemény dátuma:" type="date" name="datum" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" placeholder="Esemény leírása:" name="leir" cols="30" rows="10" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" name="send" class="btn btn-lg btn-primary btn-block">Elküld</button>
-                    </div>
-                    <p><?php $_SESSION['message'] ?></p>
-
+                    <form class="login-form" action="home.php" method="POST">
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Esemény neve:" type="text" name="esemeny" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Esemény dátuma:" type="datetime-local" name="datum" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Esemény leírása:" name="leir" cols="30" rows="10" required></textarea>
+                        </div>
+                        <!--<div class="form-group">
+                            <input class="form-control" placeholder="Szervező:" type="text" name="szervezo">
+                        </div>-->
+                        <div class="form-group">
+                            <button type="submit" onclick="formReset()" name="send">Elküld</button>
+                        </div>
+                    </form>
                 </div>
 
                 <div id="About" class="tabcontent">
                     <h3>Tagok</h3>
 
 
-                    <div style="overflow-x:auto;">
+                    <div>
                         <table>
                             <tr>
                                 <th>Név</th>
@@ -175,37 +164,45 @@ if (isset($_POST['send'])) {
                             <?php endforeach; ?>
 
                     </div>
+                </div>
 
-                    <div id="POI" class="tabcontent">
-                        <h3>POI</h3>
-                        <p>Mi, hol, merre.</p>
-                        <div>
-                            <iframe src="https://www.google.com/maps/d/embed?mid=1Wn__WAcTFbzjnhwnQ8oyQ9e8x50GPbE&ehbc=2E312F" width="100%" height="480"></iframe>
-                        </div>
+                <div id="POI" class="tabcontent">
+                    <h3>POI</h3>
+                    <p>Mi, hol, merre.</p>
+                    <div>
+                        <p>lorem100
+
+                        </p>
+                        <iframe src="https://www.google.com/maps/d/embed?mid=1Wn__WAcTFbzjnhwnQ8oyQ9e8x50GPbE&ehbc=2E312F" width="100%" height="480"></iframe>
                     </div>
-
-
                 </div>
             </div>
-            <div class="rightcolumn">
-                <div class="card">
-                    <h2>Zene:</h2>
-                    <div class="fakeimg" style="height:100px;">Image</div>
-                    <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-                </div>
-                <div class="card">
-                    <h3>Hasznos linkek:</h3>
-                    <div class="fakeimg">Image</div><br>
-                    <div class="fakeimg">Image</div><br>
-                    <div class="fakeimg">Image</div>
-                </div>
-                <div class="card">
-                    <h3>Kell ez ide?</h3>
-                    <p>Some text..</p>
-                </div>
+
+        </div>
+        <div class="rightcolumn">
+            <div class="card">
+                <h2>Zene:</h2>
+                <div class="fakeimg" style="height:100px;">Image</div>
+                <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+            </div>
+            <div class="card">
+                <h3>Hasznos linkek:</h3>
+                <div class="fakeimg">Image</div><br>
+                <div class="fakeimg">Image</div><br>
+                <div class="fakeimg">Image</div>
+            </div>
+            <div class="card">
+                <h3>Kell ez ide?</h3>
+                <p>Some text..</p>
             </div>
         </div>
-        <?php require_once('footer.php'); ?>
+    </div>
+
+
+    <div class="footer">
+        <h2>Footer</h2>
+    </div>
+    <script src="./home.js"></script>
 
 </body>
 
