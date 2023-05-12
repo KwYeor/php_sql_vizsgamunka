@@ -26,7 +26,7 @@ class User extends DbConnection
 
         if ($query->num_rows  > 0) {
             $row = $query->fetch_array();
-            return $row['id'];
+            return $row['tid'];
         } else {
             return false;
         }

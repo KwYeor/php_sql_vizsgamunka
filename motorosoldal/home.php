@@ -12,7 +12,7 @@ require_once('adatkezelo.php');
 $user = new User();
 
 //tag adatok bekérése
-$sql = "SELECT * FROM tag WHERE id = '" . $_SESSION['user'] . "'";
+$sql = "SELECT * FROM tag WHERE tid = '" . $_SESSION['user'] . "'";
 $row = $user->details($sql);
 ?>
 
@@ -30,6 +30,9 @@ $jelentkezesek = $jelentkezes->getJelentkezesek();
 
 $kiir = new Szervezo();
 $kiir->setTura();
+
+$feedback = new Visszajelzo();
+$feedback->setJelentkezes();
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -57,7 +60,7 @@ $kiir->setTura();
             <div class="card">
                 <button class="tablink" onclick="openPage('Home', this, '#132614')">Főoldal</button>
                 <button class="tablink" onclick="openPage('News', this, '#26381B')" id="defaultOpen">Túrák</button>
-                <button class="tablink" onclick="openPage('Contact', this, '#2F440D')" id="defaultOpen">Szervező</button>
+                <button class="tablink" onclick="openPage('Contact', this, '#2F440D')">Szervező</button>
                 <button class="tablink" onclick="openPage('About', this, '#344D2D')">Tagok</button>
                 <button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>
 
@@ -76,12 +79,41 @@ $kiir->setTura();
                 <div id="News" class="tabcontent">
                     <h1>Túrák</h1>
                     <?php foreach ($turak as $tura) : ?>
+
+                        <script>
+                            // Set the date we're counting down to
+                            var countDownDate = new Date("<?php echo $tura['esemeny_datuma']; ?>").getTime();
+                            //alert(countDownDate);
+                            // Update the count down every 1 second
+                            var x = setInterval(function() {
+
+                                // Get today's date and time
+                                var now = new Date().getTime();
+
+                                // Find the distance between now and the count down date
+                                var distance = now - countDownDate;
+
+                                // Time calculations for days, hours, minutes and seconds
+                                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                                // Display the result in the element with id="demo"
+                                document.getElementById("demo").innerHTML = days + "d " + hours + "h " +
+                                    minutes + "m " + seconds + "s ";
+
+                                // If the count down is finished, write some text
+                                if (distance < 0) {
+                                    clearInterval(x);
+                                    document.getElementById("demo").innerHTML = "EXPIRED";
+                                }
+                            }, 1000);
+                        </script>
                         <table>
                             <tr>
                                 <th>Esemény neve:</th>
-                                <th><?php echo $tura['esemenynev']; ?></th>
-
-                                </th>
+                                <th><?php echo $tura['esemenynev']; ?><span id="demo"></span></th>
 
                             </tr>
                             <tr>
@@ -98,6 +130,7 @@ $kiir->setTura();
                                 <th><?php echo $tura['esemeny_leiras']; ?></th>
                             </tr>
                         </table>
+
                         <h5>Eddigi visszajelzések:</h5>
                         <?php
                         $jelentkezesek_tura_szerint = array_filter($jelentkezesek, function ($jelentkezes) use ($tura) {
@@ -111,30 +144,48 @@ $kiir->setTura();
                                 <p><?php echo $jelentkezes['becenev'] . ": " . $jelentkezes['valasz'] . "   ( " . $jelentkezes['tag_megjegyzes'] . " )"; ?></p>
                                 <!--<h3>válasz</h3>
                                 <p><?php echo $jelentkezes['valasz']; ?>/</p>
-                                <!--<h3>megjegyzés</h3>
+                                <h3>megjegyzés</h3>
                                 <p><?php echo $jelentkezes['tag_megjegyzes']; ?>/</p>-->
                             <?php endforeach; ?>
                         <?php else : ?>
                             <p>Nincs jelentkezés</p>
                         <?php endif; ?>
+                        <form action="home.php" method="POST">
+
+                            <div><!--id="rejt"-->
+                                <div><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
+                                <input type="radio" id="igen" name="answer" value="igen">
+                                <label for="igen">Igen</label><br>
+                                <input type="radio" id="talan" name="answer" value="talan">
+                                <label for="talan">Talán</label><br>
+                                <input type="radio" id="nem" name="answer" value="nem">
+                                <label for="nem">Nem</label>
+                            </div>
+                            <div>
+                                <textarea placeholder="Megjegyzés:" name="note" cols="30" rows="10"></textarea>
+                            </div>
+                            <!--<div class="form-group">
+                            <input class="form-control" placeholder="Szervező:" type="text" name="szervezo">
+                        </div>-->
+                            <div>
+                                <button type="submit" onclick="formReset()" name="feedback">Elküld</button>
+                            </div>
+                        </form>
                     <?php endforeach; ?>
                 </div>
                 <div id="Contact" class="tabcontent">
                     <h3>Szervező</h3>
-                    <form class="login-form" action="home.php" method="POST">
-                        <div class="form-group">
-                            <input class="form-control" placeholder="Esemény neve:" type="text" name="esemeny" required>
+                    <form action="home.php" method="POST" target="_blank">
+                        <div>
+                            <input placeholder="Esemény neve:" type="text" name="esemeny" required>
                         </div>
-                        <div class="form-group">
-                            <input class="form-control" placeholder="Esemény dátuma:" type="datetime-local" name="datum" required>
+                        <div>
+                            <input placeholder="Esemény dátuma:" type="datetime-local" name="datum" required>
                         </div>
-                        <div class="form-group">
-                            <textarea class="form-control" placeholder="Esemény leírása:" name="leir" cols="30" rows="10" required></textarea>
+                        <div>
+                            <textarea placeholder="Esemény leírása:" name="leir" cols="30" rows="10" required></textarea>
                         </div>
-                        <!--<div class="form-group">
-                            <input class="form-control" placeholder="Szervező:" type="text" name="szervezo">
-                        </div>-->
-                        <div class="form-group">
+                        <div>
                             <button type="submit" onclick="formReset()" name="send">Elküld</button>
                         </div>
                     </form>
@@ -228,3 +279,4 @@ $kiir->setTura();
 <!--https://www.w3schools.com/howto/howto_css_social_media_buttons.asp-->
 <!--https://www.w3schools.com/howto/howto_js_scroll_to_top.asp-->
 <!--https://www.w3schools.com/howto/howto_js_image_grid.asp-->
+<!--"<?php echo $jelentkezes['esemeny_id']; ?>"-->

@@ -34,6 +34,9 @@
     margin: 2px 1px;
     cursor: pointer;
 }
+#rejt{
+  display: none;
+}
   .logout {
     float: right;
     width: 20%;
