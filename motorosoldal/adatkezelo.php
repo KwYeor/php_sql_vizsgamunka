@@ -82,6 +82,14 @@ class Jelentkezes
         ORDER BY esemeny_datuma DESC, valasz ASC";
         return $this->database->getResultArray($sql);
     }
+    public function getJelentkezesId($tag_id, $esemeny_id): array
+    {
+        $sql = "SELECT jid FROM jelentkezes AS j 
+        LEFT JOIN tag AS t ON(j.tag_id = t.tid)
+        LEFT JOIN esemeny AS e ON(j.esemeny_id = e.id)
+        WHERE j.tag_id = '$tag_id' AND j.esemeny_id = '$esemeny_id'";
+        return $this->database->getResultArray($sql);
+    }
 }
 
 // események feltöltése
@@ -94,12 +102,8 @@ class Szervezo extends DbConnection
                                                     esemeny_datuma = '$datum' AND
                                                     esemeny_leiras = '$leir' AND
                                                     tag_id = '$szervezo'";
-        echo '<pre>';
-        print_r($sql3);
 
         $result3 = $this->connection->query($sql3);
-        echo '<pre>';
-        print_r($result3);
 
         if ($result3->num_rows > 0) {
 
@@ -134,13 +138,8 @@ class Szervezo extends DbConnection
                                         '$datum',
                                         '$leir',                                   
                                         '$szervezo')";
-                echo '<pre>';
-                print_r($sql2);
 
                 $result2 = $this->connection->query($sql2);
-                echo '<pre>';
-                print_r($result2);
-
 
                 if ($result2) {
                     echo "Az esemény sikeresen feltöltve!";
@@ -219,13 +218,13 @@ class Visszajelzo extends DbConnection
             $megjegyzes = filter_var($_POST['note'], FILTER_SANITIZE_ADD_SLASHES);
             $esemenyid = $_POST['esemeny_id'];
             $jelentkezo = $_SESSION['user'];
-            $jelentkezes_id = $_POST['id'];
+            $jelentkezes_id = $_POST['jid'];
 
 
             $sql6 =  "SELECT * FROM jelentkezes AS j 
             LEFT JOIN tag AS t ON(j.tag_id = t.tid)
             LEFT JOIN esemeny AS e ON(j.esemeny_id = e.id)
-            WHERE j.id = '$jelentkezes_id'
+            WHERE j.jid = '$jelentkezes_id'
             ORDER BY esemeny_datuma DESC, valasz ASC
             UPDATE jelentkezes (valasz,
                                                   tag_megjegyzes)

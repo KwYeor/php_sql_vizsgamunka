@@ -27,12 +27,22 @@ $tagok = $tag->getTagok();
 
 $jelentkezes = new Jelentkezes();
 $jelentkezesek = $jelentkezes->getJelentkezesek();
+/*
+$jelentkezesID = new Jelentkezes();
+$jelentkezesekID = $jelentkezesID->getJelentkezesId($tag_id, $esemeny_id);
+<input type="text" name="jelentkezes_id" required value="<?php echo $jelentkezesekID['jid']; ?>">
+<button type="submit" onclick="formReset()" name="update">Módosít</button>
+
+*/
+
+
 
 $kiir = new Szervezo();
 $kiir->setTura();
 
 $feedback = new Visszajelzo();
 $feedback->setJelentkezes();
+
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -46,24 +56,31 @@ $feedback->setJelentkezes();
 </head>
 
 <body>
-
     <div class="header">
-        <h2>Motoros túrák</h2>
-    </div>
-    <div class="fejlec">
-        <p class="hello">Hello, <?php echo $row['becenev']; ?>!</p><a href="logout.php" class="logout">Kijelentkezés</a>
-
+        <img src="./assets/wallpaper-mania.com_High_resolution_wallpaper_background_ID_77700349076.jpg" alt="Fire" style="width:100%;">
+        <div class="bottom-left">
+            <p class="hello">Hello, <?php echo $row['becenev']; ?>!</p>
+        </div>
+        <div class="top-left">.</div>
+        <div class="top-right">.</div>
+        <div class="bottom-right">
+            <p><a href="logout.php" class="logout">Kijelentkezés</a></p>
+        </div>
+        <div class="centered">
+            <h2>Motoros túrák</h2>
+        </div>
     </div>
 
     <div class="roww">
         <div class="leftcolumn">
             <div class="card">
-                <button class="tablink" onclick="openPage('Home', this, '#132614')">Főoldal</button>
-                <button class="tablink" onclick="openPage('News', this, '#26381B')" id="defaultOpen">Túrák</button>
-                <button class="tablink" onclick="openPage('Contact', this, '#2F440D')">Szervező</button>
-                <button class="tablink" onclick="openPage('About', this, '#344D2D')">Tagok</button>
-                <button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>
 
+                <button class="tablink" onclick="openPage('Home', this, '#ff0000d7')">Főoldal</button>
+                <button class="tablink" onclick="openPage('News', this, '#ff0000d7')" id="defaultOpen">Túrák</button>
+                <button class="tablink" onclick="openPage('Contact', this, '#ff0000d7')">Szervező</button>
+                <button class="tablink" onclick="openPage('About', this, '#ff0000d7')">Tagok</button>
+                <!--<button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>
+-->
                 <div id="Home" class="tabcontent">
                     <h3>Főoldal</h3>
                     <div class="card">
@@ -78,6 +95,8 @@ $feedback->setJelentkezes();
 
                 <div id="News" class="tabcontent">
                     <h1>Túrák</h1>
+                    <p><a href="home.php" class="logout">Frissítés</a></p>
+
                     <?php foreach ($turak as $tura) : ?>
 
                         <script>
@@ -155,12 +174,8 @@ $feedback->setJelentkezes();
                             <p>Nincs jelentkezés</p>
                         <?php endif; ?>
                         <form action="home.php" method="POST">
-                            <?php echo '<pre>';
-                            print_r($jelentkezesek);      ?>
-
                             <div><!--id="rejt"-->
-                                <div><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
-                                <input type="text" name="jelentkezes_id" required value="<?php echo $jelentkezesek['id'] ?>">
+                                <div id="rejt"><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
                                 <input type="radio" id="igen" name="answer" value="igen">
                                 <label for="igen">Igen</label><br>
                                 <input type="radio" id="talan" name="answer" value="talan">
@@ -171,20 +186,21 @@ $feedback->setJelentkezes();
                             <div>
                                 <textarea placeholder="Megjegyzés:" name="note" cols="20" rows="5" "></textarea>
                             </div>
-                            <!--<div class=" form-group">
-                            <input class="form-control" placeholder="Szervező:" type="text" name="szervezo">
-                        </div>-->
                             <div>
-                                <button type="submit" onclick="formReset()" name="feedback">Elküld</button>
-                                <button type="submit" onclick="formReset()" name="update">Módosít</button>
+                                <button type=" submit" onclick="formReset()" name="feedback">Elküld</button>
 
                             </div>
+
                         </form>
+
                     <?php endforeach; ?>
                 </div>
+
                 <div id="Contact" class="tabcontent">
-                    <h3>Szervező</h3>
-                    <form action="home.php" method="POST" target="_blank">
+                <div class="forma">    
+                <div class="form1">  
+                <h3>Események szervezése</h3>
+                    <form name="form1" action="home.php" method="POST" >
                         <div>
                             <input placeholder="Esemény neve:" type="text" name="esemeny" required>
                         </div>
@@ -195,51 +211,69 @@ $feedback->setJelentkezes();
                             <textarea placeholder="Esemény leírása:" name="leir" cols="30" rows="10" required></textarea>
                             </div>
                             <div>
-                                <button type="submit" onclick="formReset()" name="send">Elküld</button>
+                                <button type="submit" name="send">Elküld</button>
                             </div>
-                        </form>
-                </div>
-
-                <div id="About" class="tabcontent">
-                    <h3>Tagok</h3>
-
-
-                    <div>
-                        <table>
-                            <tr>
-                                <th>Név</th>
-                                <th></th>
-                                <th>Telefon</th>
-                                <th>Email</th>
-                                <th>Bemutatkozás</th>
-                            </tr>
-                            <?php foreach ($tagok as $tag) : ?>
-                                <tr>
-                                    <td><?php echo $tag['becenev']; ?></td>
-                                    <td><?php echo $tag['nev']; ?></td>
-                                    <td><?php echo $tag['telefon']; ?></td>
-                                    <td><?php echo $tag['email']; ?></td>
-                                    <td><?php echo $tag['bemutatkozas']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-
-                    </div>
-                </div>
-
-                <div id="POI" class="tabcontent">
-                    <h3>POI</h3>
-                    <p>Mi, hol, merre.</p>
-                    <div>
-                        <p>lorem100
-
-                        </p>
-                        <iframe src="https://www.google.com/maps/d/embed?mid=1Wn__WAcTFbzjnhwnQ8oyQ9e8x50GPbE&ehbc=2E312F" width="100%" height="480"></iframe>
-                    </div>
-                </div>
+                </div><!--
+                <div class="form2">
+                    <h3>Események módosítása</h3>
+                    <form action="user.php" method="POST" >
+                        <div>
+                            <input placeholder="Esemény neve:" type="checkbox" name="mas">
+                        </div>
+                        <div>
+                            <input placeholder="Esemény dátuma:" type="datetime-local" name="masko">
+                        </div>
+                        <div>
+                            <textarea placeholder="Esemény leírása:" name="mashogy" cols="30" rows="10"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" onclick="formReset()" name="change">Módosít</button>
+                        </div>
+                    </form>
+                </div>-->
             </div>
-
         </div>
-        <div class="rightcolumn">
+
+        <div id="About" class="tabcontent">
+            <h3>Tagok</h3>
+
+
+            <div style="overflow-x:auto;">
+                <table>
+                    <tr>
+                        <th>Név</th>
+                        <th></th>
+                        <th>Telefon</th>
+                        <th>Email</th>
+                        <th>Bemutatkozás</th>
+                    </tr>
+                    <?php foreach ($tagok as $tag) : ?>
+                        <tr>
+                            <td><?php echo $tag['becenev']; ?></td>
+                            <td><?php echo $tag['nev']; ?></td>
+                            <td><?php echo $tag['telefon']; ?></td>
+                            <td><?php echo $tag['email']; ?></td>
+                            <td><?php echo $tag['bemutatkozas']; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+
+            </div>
+        </div>
+
+        <div id="POI" class="tabcontent">
+            <h3>POI</h3>
+            <p>Mi, hol, merre.</p>
+            <div>
+                <p>lorem100
+
+                </p>
+                <iframe src="https://www.google.com/maps/d/embed?mid=1Wn__WAcTFbzjnhwnQ8oyQ9e8x50GPbE&ehbc=2E312F" width="100%" height="480"></iframe>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <!--<div class="rightcolumn">
             <div class="card">
                 <h2>Zene:</h2>
                 <div class="fakeimg" style="height:100px;">Image</div>
@@ -261,7 +295,7 @@ $feedback->setJelentkezes();
 
     <div class="footer">
         <h2>Footer</h2>
-    </div>
+    </div>-->
     <script src="./home.js"></script>
 
 </body>
