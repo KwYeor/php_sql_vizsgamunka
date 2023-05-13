@@ -175,10 +175,10 @@ $feedback->setJelentkezes();
                         <?php endif; ?>
                         <form action="home.php" method="POST">
                             <div><!--id="rejt"-->
-                                <div id="rejt"><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
+                                <div><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
                                 <input type="radio" id="igen" name="answer" value="igen">
                                 <label for="igen">Igen</label><br>
-                                <input type="radio" id="talan" name="answer" value="talan">
+                                <input type="radio" id="talan" name="answer" value="talán">
                                 <label for="talan">Talán</label><br>
                                 <input type="radio" id="nem" name="answer" value="nem">
                                 <label for="nem">Nem</label>
@@ -187,7 +187,7 @@ $feedback->setJelentkezes();
                                 <textarea placeholder="Megjegyzés:" name="note" cols="20" rows="5" "></textarea>
                             </div>
                             <div>
-                                <button type=" submit" onclick="formReset()" name="feedback">Elküld</button>
+                                <button type=" submit" onclick="formReset()" name="feedback">Küldés / Módosítás</button>
 
                             </div>
 

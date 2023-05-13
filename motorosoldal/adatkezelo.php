@@ -82,6 +82,7 @@ class Jelentkezes
         ORDER BY esemeny_datuma DESC, valasz ASC";
         return $this->database->getResultArray($sql);
     }
+    /*
     public function getJelentkezesId($tag_id, $esemeny_id): array
     {
         $sql = "SELECT jid FROM jelentkezes AS j 
@@ -89,7 +90,7 @@ class Jelentkezes
         LEFT JOIN esemeny AS e ON(j.esemeny_id = e.id)
         WHERE j.tag_id = '$tag_id' AND j.esemeny_id = '$esemeny_id'";
         return $this->database->getResultArray($sql);
-    }
+    }*/
 }
 
 // események feltöltése
@@ -207,10 +208,30 @@ class Visszajelzo extends DbConnection
                 }
             } else {
                 echo "A visszajelzés már létezik az adatbázisban";
+                $valasz = $this->connection->real_escape_string($valasz);
+                $megjegyzes = $this->connection->real_escape_string($megjegyzes);
+                $esemenyid = $this->connection->real_escape_string($esemenyid);
+                $jelentkezo = $this->connection->real_escape_string($jelentkezo);
+
+
+
+                $sql5 =  "UPDATE jelentkezes SET valasz = '$valasz',
+                                                 tag_megjegyzes = '$megjegyzes'
+                          WHERE tag_id = '$jelentkezo' AND esemeny_id = '$esemenyid'";
+
+
+                $result5 = $this->connection->query($sql5);
+
+
+                if ($result5) {
+                    echo "A visszajelzés sikeresen feltöltve!";
+                } else {
+                    echo "Adatfeltöltési hiba " . $this->connection->error;
+                }
             }
         }
     }
-    public function updateJelentkezes()
+    /*    public function updateJelentkezes()
     {
 
         if (isset($_POST['update'])) {
@@ -224,10 +245,10 @@ class Visszajelzo extends DbConnection
             $sql6 =  "SELECT * FROM jelentkezes AS j 
             LEFT JOIN tag AS t ON(j.tag_id = t.tid)
             LEFT JOIN esemeny AS e ON(j.esemeny_id = e.id)
-            WHERE j.jid = '$jelentkezes_id'
+            WHERE j.tag_id = '$jelentkezo' AND j.esemeny_id = "$esemenyid"
             ORDER BY esemeny_datuma DESC, valasz ASC
             UPDATE jelentkezes (valasz,
-                                                  tag_megjegyzes)
+                                tag_megjegyzes)
                             VALUES ('$valasz',
                                     '$megjegyzes')";
 
@@ -240,5 +261,5 @@ class Visszajelzo extends DbConnection
                 echo "Adatfeltöltési hiba " . $this->connection->error;
             }
         }
-    }
+    }*/
 }
