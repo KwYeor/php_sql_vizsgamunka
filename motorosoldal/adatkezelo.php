@@ -211,4 +211,35 @@ class Visszajelzo extends DbConnection
             }
         }
     }
+    public function updateJelentkezes()
+    {
+
+        if (isset($_POST['update'])) {
+            $valasz = filter_var($_POST['answer'], FILTER_SANITIZE_ADD_SLASHES);
+            $megjegyzes = filter_var($_POST['note'], FILTER_SANITIZE_ADD_SLASHES);
+            $esemenyid = $_POST['esemeny_id'];
+            $jelentkezo = $_SESSION['user'];
+            $jelentkezes_id = $_POST['id'];
+
+
+            $sql6 =  "SELECT * FROM jelentkezes AS j 
+            LEFT JOIN tag AS t ON(j.tag_id = t.tid)
+            LEFT JOIN esemeny AS e ON(j.esemeny_id = e.id)
+            WHERE j.id = '$jelentkezes_id'
+            ORDER BY esemeny_datuma DESC, valasz ASC
+            UPDATE jelentkezes (valasz,
+                                                  tag_megjegyzes)
+                            VALUES ('$valasz',
+                                    '$megjegyzes')";
+
+            $result6 = $this->connection->query($sql6);
+
+
+            if ($result6) {
+                echo "A módosítás sikeresen feltöltve!";
+            } else {
+                echo "Adatfeltöltési hiba " . $this->connection->error;
+            }
+        }
+    }
 }

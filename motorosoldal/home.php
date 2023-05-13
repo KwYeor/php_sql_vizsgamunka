@@ -55,7 +55,7 @@ $feedback->setJelentkezes();
 
     </div>
 
-    <div class="row">
+    <div class="roww">
         <div class="leftcolumn">
             <div class="card">
                 <button class="tablink" onclick="openPage('Home', this, '#132614')">Főoldal</button>
@@ -113,7 +113,11 @@ $feedback->setJelentkezes();
                         <table>
                             <tr>
                                 <th>Esemény neve:</th>
-                                <th><?php echo $tura['esemenynev']; ?><span id="demo"></span></th>
+                                <th>
+                                    <div><?php echo $tura['esemenynev']; ?></div>
+                                    <div><span id="demo"></span>
+                                    </div>
+                                </th>
 
                             </tr>
                             <tr>
@@ -151,9 +155,12 @@ $feedback->setJelentkezes();
                             <p>Nincs jelentkezés</p>
                         <?php endif; ?>
                         <form action="home.php" method="POST">
+                            <?php echo '<pre>';
+                            print_r($jelentkezesek);      ?>
 
                             <div><!--id="rejt"-->
                                 <div><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
+                                <input type="text" name="jelentkezes_id" required value="<?php echo $jelentkezesek['id'] ?>">
                                 <input type="radio" id="igen" name="answer" value="igen">
                                 <label for="igen">Igen</label><br>
                                 <input type="radio" id="talan" name="answer" value="talan">
@@ -162,13 +169,15 @@ $feedback->setJelentkezes();
                                 <label for="nem">Nem</label>
                             </div>
                             <div>
-                                <textarea placeholder="Megjegyzés:" name="note" cols="30" rows="10"></textarea>
+                                <textarea placeholder="Megjegyzés:" name="note" cols="20" rows="5" "></textarea>
                             </div>
-                            <!--<div class="form-group">
+                            <!--<div class=" form-group">
                             <input class="form-control" placeholder="Szervező:" type="text" name="szervezo">
                         </div>-->
                             <div>
                                 <button type="submit" onclick="formReset()" name="feedback">Elküld</button>
+                                <button type="submit" onclick="formReset()" name="update">Módosít</button>
+
                             </div>
                         </form>
                     <?php endforeach; ?>
@@ -184,11 +193,11 @@ $feedback->setJelentkezes();
                         </div>
                         <div>
                             <textarea placeholder="Esemény leírása:" name="leir" cols="30" rows="10" required></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" onclick="formReset()" name="send">Elküld</button>
-                        </div>
-                    </form>
+                            </div>
+                            <div>
+                                <button type="submit" onclick="formReset()" name="send">Elküld</button>
+                            </div>
+                        </form>
                 </div>
 
                 <div id="About" class="tabcontent">
