@@ -27,15 +27,6 @@ $tagok = $tag->getTagok();
 
 $jelentkezes = new Jelentkezes();
 $jelentkezesek = $jelentkezes->getJelentkezesek();
-/*
-$jelentkezesID = new Jelentkezes();
-$jelentkezesekID = $jelentkezesID->getJelentkezesId($tag_id, $esemeny_id);
-<input type="text" name="jelentkezes_id" required value="<?php echo $jelentkezesekID['jid']; ?>">
-<button type="submit" onclick="formReset()" name="update">Módosít</button>
-
-*/
-
-
 
 $kiir = new Szervezo();
 $kiir->setTura();

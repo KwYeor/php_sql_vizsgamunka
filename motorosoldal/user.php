@@ -69,3 +69,41 @@ class Reg extends DbConnection
         }
     }
 }
+class Jelszo
+{
+    private $password;
+    private $errors = array();
+
+    public function __construct($password)
+    {
+        $this->password = $password;
+    }
+
+    public function validate()
+    {
+        if (strlen($this->password) < 8) {
+            $this->errors[] = "A jelszó legalább 8 karakter hosszúnak legyen!";
+        }
+        if (!preg_match("#[0-9]+#", $this->password)) {
+            $this->errors[] = "A jelszó tartalmazzon legalább egy számot!";
+        }
+        if (!preg_match("#[a-zA-Z]+#", $this->password)) {
+            $this->errors[] = "A jelszó tartalmazzon legalább egy betűt.";
+        }
+        if (!preg_match("#[A-Z]+#", $this->password)) {
+            $this->errors[] = "A jelszó tartalmazzon legalább egy nagybetűt.";
+        }
+        if (!preg_match("#[a-z]+#", $this->password)) {
+            $this->errors[] = "A jelszó tartalmazzon legalább egy kisbetűt.";
+        }
+        if (count($this->errors) > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+}
