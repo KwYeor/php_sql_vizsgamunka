@@ -1,8 +1,13 @@
 <?php
+
+//a regisztráció kódsorai
+
 session_start();
 require_once('user.php');
 // a form nem enged kitöltetlen mezőt, így elegendő ellenőrizni, hogy van e POST
 if (isset($_POST['send'])) {
+
+    //veszélyes karakterek szűrése
 
     $fullname = filter_var($_POST['name'], FILTER_SANITIZE_SPECIAL_CHARS);
     $username = filter_var($_POST['username'], FILTER_SANITIZE_SPECIAL_CHARS);
@@ -11,6 +16,8 @@ if (isset($_POST['send'])) {
     $intro = filter_var($_POST['intro'], FILTER_SANITIZE_SPECIAL_CHARS);
     $psw = $_POST['psw'];
     $repsw = $_POST['repsw'];
+
+    // jelszóvalidáció
     if (strlen($psw) < 8 || (!preg_match("#[0-9]+#", $psw)) || (!preg_match("#[a-zA-Z]+#", $psw)) || (!preg_match("#[A-Z]+#", $psw))) {
         $_SESSION['message'] = "A jelszó legalább 8 karakter hosszú legyen, kis és nagybetűt és egy számot is tartalmazzon!";
     } else {
@@ -29,8 +36,10 @@ if (isset($_POST['send'])) {
     }
 }
 
-
 ?>
+
+<!--regisztrációs oldal -->
+
 <!DOCTYPE html>
 <html lang="hu">
 

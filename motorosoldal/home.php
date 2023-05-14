@@ -74,17 +74,18 @@ $admintura->updateTura();
                 <button class="tablink" onclick="openPage('About', this, '#ff0000d7')">Tagok</button>
                 <button class="tablink" onclick="openPage('Home', this, '#ff0000d7')">Szerkesztő</button>
 
-                <!--<button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>-->
+                <!--<button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>
+                ha ezt visszaállítom, akkor a tablinkek szélességét csökkenteni kell 20%-ra!-->
 
                 <div id="Home" class="tabcontent">
-                    <h3>Főoldal</h3>
+                    <h3>Események felülírása</h3>
                     <div class="card">
-                        <h2>The select Element</h2>
-                        <p>The select element defines a drop-down list:</p>
+                        <p>Az esemény kiválasztásához gördítsd le a listát:</p>
                         <form action="home.php" method="POST">
-                            <label for="event">Válassz!:</label>
+                            <label for="event"></label>
                             <select id="event" name="event">
                                 <option value="">Válassz egy eseményt</option>
+                                <!-- az események behívása-->
                                 <?php foreach ($turak as $tura) : ?>
                                     <option value="<?php echo $tura['id']; ?>"><?php echo $tura['esemenynev']; ?></option>
                                 <?php endforeach; ?>
@@ -95,6 +96,8 @@ $admintura->updateTura();
                             <div>
                                 <textarea id="leiras" name="atir" cols="30" rows="10" required></textarea>
                             </div>
+
+                            <!-- a visszaszámláló js kódja-->
 
                             <script>
                                 var turak = <?php echo json_encode($turak); ?>;
@@ -111,13 +114,15 @@ $admintura->updateTura();
 
                             <button type="submit" name="admintura">Módosítás</button>
                         </form>
-                        <?php echo '<pre>';
-                        print_r($_POST); ?>
                     </div>
                 </div>
 
                 <div id="News" class="tabcontent">
                     <h1>Túrák</h1>
+
+                    <!-- az esemény megjelenítése-->
+                    <!-- az esemény táblaadatainak behívása-->
+
                     <p><a href="home.php" class="logout">Frissítés</a></p>
                     <?php foreach ($turak as $tura) : ?>
                         <script>
@@ -172,24 +177,27 @@ $admintura->updateTura();
                         </table>
 
                         <h5>Eddigi visszajelzések:</h5>
+
+                        <!-- az eseményekhez tartozó jelentkezések táblaadatainak behívása-->
+
                         <?php
                         $jelentkezesek_tura_szerint = array_filter($jelentkezesek, function ($jelentkezes) use ($tura) {
                             return $jelentkezes['esemenynev'] == $tura['esemenynev'];
                         });
                         ?>
                         <?php if (!empty($jelentkezesek_tura_szerint)) : ?>
-                            <!-- <h3>esemény: <?php echo $tura['esemenynev']; ?></h3>-->
+
                             <?php foreach ($jelentkezesek_tura_szerint as $jelentkezes) : ?>
-                                <!--<h3>név</h3>-->
+
                                 <p><?php echo $jelentkezes['becenev'] . ": " . $jelentkezes['valasz'] . "   ( " . $jelentkezes['tag_megjegyzes'] . " )"; ?></p>
-                                <!--<h3>válasz</h3>
-                                <p><?php echo $jelentkezes['valasz']; ?>/</p>
-                                <h3>megjegyzés</h3>
-                                <p><?php echo $jelentkezes['tag_megjegyzes']; ?>/</p>-->
+
                             <?php endforeach; ?>
                         <?php else : ?>
-                            <p>Nincs jelentkezés</p>
+                            <p>Nincs még visszajelzés</p>
                         <?php endif; ?>
+
+                        <!-- visszajelzések leadása vagy nódosítása-->
+
                         <form action="home.php" method="POST">
                             <div><!--id="rejt"-->
                                 <div id="rejt"><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
@@ -213,6 +221,8 @@ $admintura->updateTura();
                     <?php endforeach; ?>
                 </div>
 
+<!-- az eseményszerkesztő-->  
+
                 <div id="Contact" class="tabcontent">
                 <div class="forma">    
                 <div class="form1">  
@@ -230,26 +240,11 @@ $admintura->updateTura();
                             <div>
                                 <button type="submit" name="send">Elküld</button>
                             </div>
-                </div><!--
-                <div class="form2">
-                    <h3>Események módosítása</h3>
-                    <form action="user.php" method="POST" >
-                        <div>
-                            <input placeholder="Esemény neve:" type="checkbox" name="mas">
-                        </div>
-                        <div>
-                            <input placeholder="Esemény dátuma:" type="datetime-local" name="masko">
-                        </div>
-                        <div>
-                            <textarea placeholder="Esemény leírása:" name="mashogy" cols="30" rows="10"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" onclick="formReset()" name="change">Módosít</button>
-                        </div>
-                    </form>
-                </div>-->
+                </div>
             </div>
         </div>
+
+        <!-- a tag táblaadatainak behívása-->
 
         <div id="About" class="tabcontent">
             <h3>Tagok</h3>
@@ -276,7 +271,7 @@ $admintura->updateTura();
 
             </div>
         </div>
-
+        <!--a POI fül, jelenleg inaktív-->
         <!--<div id="POI" class="tabcontent">
             <h3>POI</h3>
             <p>Mi, hol, merre.</p>
@@ -290,6 +285,7 @@ $admintura->updateTura();
     </div>
 
     </div>
+    <!-- az oldalsáv, jelenleg inaktív-->
     <!--<div class="rightcolumn">
             <div class="card">
                 <h2>Zene:</h2>
@@ -307,10 +303,11 @@ $admintura->updateTura();
                 <p>Some text..</p>
             </div>
         </div>
-    </div>
+    </div>-->
 
+    <!-- az oldalsáv, jelenleg inaktív  -->
 
-    <div class="footer">
+    <!--   <div class="footer">
         <h2>Footer</h2>
     </div>-->
     <script src="./home.js"></script>

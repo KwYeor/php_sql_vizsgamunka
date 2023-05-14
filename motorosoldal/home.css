@@ -67,7 +67,10 @@ img{height: 30%;
   color: chartreuse;
   font-size: 200%;
 }
-  .fejlec{display: grid;height: 80px;}
+  .fejlec{
+    display: grid;height: 80px;
+  }
+
   .hello{
     float: left;
     border:solid chartreuse;

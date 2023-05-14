@@ -2,6 +2,8 @@
 
 session_start();
 
+// Bejelentkező oldal
+
 //ha be van jeletkezve, átirányít a home-ba
 if (isset($_SESSION['user'])) {
     header('location:home.php');
@@ -49,6 +51,7 @@ if (isset($_SESSION['user'])) {
                                 <div class="text-center">Jelentkeznél közénk? <a href="registration.php">Regisztrálj!</a></div>
                             </div>
                         </form>
+                        <!-- hibaüzenet -->
                         <?php
                         if (isset($_SESSION['message'])) {
                         ?>

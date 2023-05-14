@@ -1,4 +1,9 @@
 <?php
+
+// inaktív fájl
+//--------------------------------------------------------
+
+
 session_start();
 //ha nincs belépve, menjen vissza az indexre
 if (!isset($_SESSION['user']) || (trim($_SESSION['user']) == '')) {

@@ -86,15 +86,6 @@ class Jelentkezes
         ORDER BY esemeny_datuma DESC, valasz ASC";
         return $this->database->getResultArray($sql);
     }
-    /*
-    public function getJelentkezesId($tag_id, $esemeny_id): array
-    {
-        $sql = "SELECT jid FROM jelentkezes AS j 
-        LEFT JOIN tag AS t ON(j.tag_id = t.tid)
-        LEFT JOIN esemeny AS e ON(j.esemeny_id = e.id)
-        WHERE j.tag_id = '$tag_id' AND j.esemeny_id = '$esemeny_id'";
-        return $this->database->getResultArray($sql);
-    }*/
 }
 
 // események feltöltése és módosítása
@@ -193,8 +184,9 @@ class Visszajelzo extends DbConnection
 {
     public function checkJelentkezes($esemenyid, $jelentkezo)
     {
-        $sql4 = "SELECT COUNT(*) FROM jelentkezes WHERE esemeny_id = '$esemenyid' AND
-                                                        tag_id = '$jelentkezo'";
+        $sql4 = "SELECT COUNT(*) FROM jelentkezes 
+                                 WHERE esemeny_id = '$esemenyid'
+                                 AND       tag_id = '$jelentkezo'";
         $result4 = $this->connection->query($sql4);
         if ($result4->fetch_Column() > 0) {
             return true; // van már ilyen sor az adatbázisban
@@ -228,8 +220,7 @@ class Visszajelzo extends DbConnection
                             VALUES ('$valasz',
                                     '$megjegyzes',
                                     '$jelentkezo',
-                                    '$esemenyid'
-                                     )";
+                                    '$esemenyid')";
 
                 $result5 = $this->connection->query($sql5);
 
@@ -240,7 +231,7 @@ class Visszajelzo extends DbConnection
                     echo "Adatfeltöltési hiba " . $this->connection->error;
                 }
             } else {
-                echo "A visszajelzés módosítva lett";
+                echo "A visszajelzés módosítva lett! ";
                 $valasz = $this->connection->real_escape_string($valasz);
                 $megjegyzes = $this->connection->real_escape_string($megjegyzes);
                 $esemenyid = $this->connection->real_escape_string($esemenyid);
@@ -250,8 +241,8 @@ class Visszajelzo extends DbConnection
 
                 $sql5 =  "UPDATE jelentkezes SET valasz = '$valasz',
                                                  tag_megjegyzes = '$megjegyzes'
-                          WHERE tag_id = '$jelentkezo' AND esemeny_id = '$esemenyid'";
-
+                                            WHERE tag_id = '$jelentkezo' 
+                                            AND esemeny_id = '$esemenyid'";
 
                 $result5 = $this->connection->query($sql5);
 

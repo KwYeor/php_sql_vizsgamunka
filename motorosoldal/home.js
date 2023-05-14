@@ -1,3 +1,6 @@
+// lapok megjelenítése
+//--------------------------------------------------------
+
 function openPage(pageName, elmnt, color) {
   let i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");

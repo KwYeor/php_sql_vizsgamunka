@@ -1,5 +1,8 @@
 
 <?php
+
+// adatbázis kapcsolat felépítése
+//---------------------------------------------------------------
 class DbConnection
 {
 
@@ -25,7 +28,8 @@ class DbConnection
 
         return $this->connection;
     }
-
+    //  adatbázis logolás
+    //------------------------------------------------------------------
     public function loging($txt)
     {
         $sql = "INSERT INTO `log` (`log`) VALUES ( \"$txt\" );";

@@ -1,3 +1,5 @@
+<!--sablon az oldalhoz, nincs használva -->
+
 <!DOCTYPE html>
 <html lang="en">
 

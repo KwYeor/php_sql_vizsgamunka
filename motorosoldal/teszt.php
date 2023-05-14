@@ -1,4 +1,8 @@
+<!--kísérletezgetés, nincs használva -->
+
 <?php
+
+
 require_once('DbConnection.php');
 class Szervezo extends DbConnection
 {
