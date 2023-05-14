@@ -78,10 +78,11 @@ $admintura->updateTura();
         <div class="leftcolumn">
             <div class="card">
 
-                <button class="tablink" onclick="openPage('Home', this, '#ff0000d7')">Főoldal</button>
-                <button class="tablink" onclick="openPage('News', this, '#ff0000d7')" id="defaultOpen">Túrák</button>
-                <button class="tablink" onclick="openPage('Contact', this, '#ff0000d7')">Szervező</button>
+                <button class="tablink" onclick="openPage('News', this, '#ff0000d7')" id="defaultOpen">Események</button>
+                <button class="tablink" onclick="openPage('Contact', this, '#ff0000d7')">Kiírás</button>
                 <button class="tablink" onclick="openPage('About', this, '#ff0000d7')">Tagok</button>
+                <button class="tablink" onclick="openPage('Home', this, '#ff0000d7')">Szerkesztő</button>
+
                 <!--<button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>-->
 
                 <div id="Home" class="tabcontent">
@@ -200,7 +201,7 @@ $admintura->updateTura();
                         <?php endif; ?>
                         <form action="home.php" method="POST">
                             <div><!--id="rejt"-->
-                                <div><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
+                                <div id="rejt"><input type="text" name="esemeny_id" required value="<?php echo $tura['id']; ?>"></div>
                                 <input type="radio" id="igen" name="answer" value="igen">
                                 <label for="igen">Igen</label><br>
                                 <input type="radio" id="talan" name="answer" value="talán">
