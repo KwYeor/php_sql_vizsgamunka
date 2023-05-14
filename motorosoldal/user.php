@@ -56,6 +56,7 @@ class Reg extends DbConnection
     private $salt = 'xXxX';
     function regUser($name, $nickname, $phone, $email, $intro, $psw)
     {
+        //if (strlen($psw) > 7 || (preg_match("#[0-9]+#", $psw)) || (preg_match("#[a-zA-Z]+#", $psw)) || (preg_match("#[A-Z]+#", $psw))) {
         $hashedPassword = md5(md5($psw . $this->salt) . $this->salt);
         $stmt = $this->connection->prepare("INSERT INTO tag 
                                             (nev, becenev, telefon, email, bemutatkozas, jelszo) 
@@ -67,43 +68,43 @@ class Reg extends DbConnection
         } else {
             return false;
         }
-    }
-}
-class Jelszo
-{
+    } /*else {
+            return false;
+            echo "A jelszó legalább 8 karakter hosszú legyen és legalább egy betűt, egy nagybetűt és egy számot is tartalmazzon!";
+        }*/
+    //}
+}/*
+class PasswordValidator {
     private $password;
     private $errors = array();
-
-    public function __construct($password)
-    {
+  
+    public function __construct($password) {
         $this->password = $password;
     }
-
-    public function validate()
-    {
+  
+    public function validate() {
         if (strlen($this->password) < 8) {
-            $this->errors[] = "A jelszó legalább 8 karakter hosszúnak legyen!";
+            $this->errors[] = "A jelszónak legalább 8 karakter hosszúnak kell lennie.";
         }
         if (!preg_match("#[0-9]+#", $this->password)) {
-            $this->errors[] = "A jelszó tartalmazzon legalább egy számot!";
+            $this->errors[] = "A jelszónak tartalmaznia kell legalább egy számot.";
         }
         if (!preg_match("#[a-zA-Z]+#", $this->password)) {
-            $this->errors[] = "A jelszó tartalmazzon legalább egy betűt.";
+            $this->errors[] = "A jelszónak tartalmaznia kell legalább egy betűt.";
         }
         if (!preg_match("#[A-Z]+#", $this->password)) {
-            $this->errors[] = "A jelszó tartalmazzon legalább egy nagybetűt.";
+            $this->errors[] = "A jelszónak tartalmaznia kell legalább egy nagybetűt.";
         }
         if (!preg_match("#[a-z]+#", $this->password)) {
-            $this->errors[] = "A jelszó tartalmazzon legalább egy kisbetűt.";
+            $this->errors[] = "A jelszónak tartalmaznia kell legalább egy kisbetűt.";
         }
         if (count($this->errors) > 0) {
             return false;
         }
         return true;
     }
-
-    public function getErrors()
-    {
+  
+    public function getErrors() {
         return $this->errors;
     }
-}
+}*/

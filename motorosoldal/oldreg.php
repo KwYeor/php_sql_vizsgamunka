@@ -11,22 +11,19 @@ if (isset($_POST['send'])) {
     $intro = filter_var($_POST['intro'], FILTER_SANITIZE_SPECIAL_CHARS);
     $psw = $_POST['psw'];
     $repsw = $_POST['repsw'];
-    if (strlen($psw) < 8 || (!preg_match("#[0-9]+#", $psw)) || (!preg_match("#[a-zA-Z]+#", $psw)) || (!preg_match("#[A-Z]+#", $psw))) {
-        $_SESSION['message'] = "A jelszó legalább 8 karakter hosszú legyen, kis és nagybetűt és egy számot is tartalmazzon!";
-    } else {
-        if ($psw == $repsw) {
-            $reg = new Reg();
-            if ($reg->regUser($fullname, $username, $phone, $email, $intro, $psw)) {
-                $_SESSION['message'] = "Sikeres regisztráció!";
-            } else {
-                $_SESSION['message'] = "Sikertelen regisztráció!";
-            }
+
+    if ($psw == $repsw) {
+        $reg = new Reg();
+        if ($reg->regUser($fullname, $username, $phone, $email, $intro, $psw)) {
+            $_SESSION['message'] = "Sikeres regisztráció!";
         } else {
-            $_SESSION['message'] = "A megadott jelszavak nem egyeznek!";
+            $_SESSION['message'] = "Sikertelen regisztráció!";
         }
-        header('Location: registration.php');
-        exit;
+    } else {
+        $_SESSION['message'] = "A megadott jelszavak nem egyeznek!";
     }
+    header('Location: index.php');
+    exit;
 }
 
 
@@ -61,7 +58,7 @@ if (isset($_POST['send'])) {
                         <h3 class="header-title">Regisztráció</h3>
                         <form class="login-form" method="POST" action="registration.php">
                             <div class="form-group">
-                                <input class="form-control" placeholder="Becenév" type="text" name="username" required>
+                                <input class="form-control" placeholder="Becenév" type="text" name="username" autofocus required>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Teljes név" type="text" name="name" required>
@@ -76,14 +73,14 @@ if (isset($_POST['send'])) {
                                 <textarea class="form-control" placeholder="Pár szó magadról és a motorodról:" name="intro" cols="30" rows="10" required></textarea>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Jelszó" type="password" name="psw" autofocus required>
+                                <input class="form-control" placeholder="Jelszó" type="password" name="psw" required>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Jelszó újra" type="password" name="repsw" required>
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" onclick="" name="send" class="btn btn-lg btn-primary btn-block">Elküld</button>
+                                <button type="submit" name="send" class="btn btn-lg btn-primary btn-block">Elküld</button>
                             </div>
                             <div class="form-group">
                                 <div class="text-center">Már regisztráltál? <a href="index.php">Jelentkezz be!</a></div>
