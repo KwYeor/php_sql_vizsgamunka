@@ -75,53 +75,72 @@ $feedback->setJelentkezes();
         <div class="leftcolumn">
             <div class="card">
 
-                <button class="tablink" onclick="openPage('Home', this, '#ff0000d7')">Főoldal</button>
+                <button class="tablink" onclick="openPage('Home', this, '#ff0000d7')" id="defaultOpen">Főoldal</button>
                 <button class="tablink" onclick="openPage('News', this, '#ff0000d7')" id="defaultOpen">Túrák</button>
                 <button class="tablink" onclick="openPage('Contact', this, '#ff0000d7')">Szervező</button>
                 <button class="tablink" onclick="openPage('About', this, '#ff0000d7')">Tagok</button>
-                <!--<button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>
--->
+                <!--<button class="tablink" onclick="openPage('POI', this, '#3B5738')">POI</button>-->
+
                 <div id="Home" class="tabcontent">
                     <h3>Főoldal</h3>
                     <div class="card">
-                        <h2>TITLE HEADING</h2>
-                        <h5>Title description, Sep 2, 2017</h5>
-                        <div class="fakeimg" style="height:200px;">Image</div>
-                        <p>Some text..</p>
-                        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                    </div>
+                        <h2>The select Element</h2>
+                        <p>The select element defines a drop-down list:</p>
+                        <form action="home.php" method="POST">
+                            <label for="event">Válassz!:</label>
+                            <select id="event" name="event">
+                                <option value="">Válassz egy eseményt</option>
+                                <?php foreach ($turak as $tura) : ?>
+                                    <option value="<?php echo $tura['id']; ?>"><?php echo $tura['esemenynev']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div>
+                                <input placeholder="Esemény dátuma:" type="datetime-local" name="ujdatum" required>
+                            </div>
+                            <div>
+                                <textarea id="leiras" name="atir" cols="30" rows="10" required></textarea>
+                            </div>
 
+                            <script>
+                                var turak = <?php echo json_encode($turak); ?>;
+                                var select = document.getElementById('event');
+                                var textarea = document.getElementById('leiras');
+                                select.addEventListener('change', function() {
+                                    var selected = select.value;
+                                    var leiras = turak.find(function(tura) {
+                                        return tura.id == selected;
+                                    }).esemeny_leiras;
+                                    textarea.value = leiras;
+                                });
+                            </script>
+
+                            <button type="submit" name="admintura">Módosítás</button>
+                        </form>
+                    </div>
                 </div>
 
                 <div id="News" class="tabcontent">
                     <h1>Túrák</h1>
                     <p><a href="home.php" class="logout">Frissítés</a></p>
-
                     <?php foreach ($turak as $tura) : ?>
-
                         <script>
                             // Set the date we're counting down to
                             var countDownDate = new Date("<?php echo $tura['esemeny_datuma']; ?>").getTime();
                             //alert(countDownDate);
                             // Update the count down every 1 second
                             var x = setInterval(function() {
-
                                 // Get today's date and time
                                 var now = new Date().getTime();
-
                                 // Find the distance between now and the count down date
                                 var distance = now - countDownDate;
-
                                 // Time calculations for days, hours, minutes and seconds
                                 var days = Math.floor(distance / (1000 * 60 * 60 * 24));
                                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
                                 // Display the result in the element with id="demo"
                                 document.getElementById("demo").innerHTML = days + "d " + hours + "h " +
                                     minutes + "m " + seconds + "s ";
-
                                 // If the count down is finished, write some text
                                 if (distance < 0) {
                                     clearInterval(x);
@@ -137,7 +156,6 @@ $feedback->setJelentkezes();
                                     <div><span id="demo"></span>
                                     </div>
                                 </th>
-
                             </tr>
                             <tr>
                                 <th>Dátum:</th>
@@ -260,7 +278,7 @@ $feedback->setJelentkezes();
             </div>
         </div>
 
-        <div id="POI" class="tabcontent">
+        <!--<div id="POI" class="tabcontent">
             <h3>POI</h3>
             <p>Mi, hol, merre.</p>
             <div>
@@ -269,7 +287,7 @@ $feedback->setJelentkezes();
                 </p>
                 <iframe src="https://www.google.com/maps/d/embed?mid=1Wn__WAcTFbzjnhwnQ8oyQ9e8x50GPbE&ehbc=2E312F" width="100%" height="480"></iframe>
             </div>
-        </div>
+        </div>-->
     </div>
 
     </div>
@@ -301,25 +319,3 @@ $feedback->setJelentkezes();
 </body>
 
 </html>
-
-<!-- Write your comments here 
-            <div class="col-md-4 col-md-offset-4">
-                <h2>Welcome to Homepage </h2>
-                <h4>User Info: </h4>
-                <p>Name: <?php echo $row['nev']; ?></p>
-                <p>Username: <?php echo $row['becenev']; ?></p>
-                <p>Password HASH: <?php echo $row['jelszo']; ?></p>
-                <p>email: <?php echo $row['email']; ?></p>
-                <a href="logout.php" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
-            </div>-->
-
-<!--https://www.w3schools.com/howto/howto_css_image_text.asp-->
-
-<!--https://www.w3schools.com/howto/howto_js_filter_lists.asp-->
-<!--https://www.w3schools.com/howto/howto_css_responsive_form.asp-->
-<!--https://www.w3schools.com/howto/howto_js_countdown.asp-->
-<!--https://www.w3schools.com/howto/howto_css_profile_card.asp-->
-<!--https://www.w3schools.com/howto/howto_css_social_media_buttons.asp-->
-<!--https://www.w3schools.com/howto/howto_js_scroll_to_top.asp-->
-<!--https://www.w3schools.com/howto/howto_js_image_grid.asp-->
-<!--"<?php echo $jelentkezes['esemeny_id']; ?>"-->
