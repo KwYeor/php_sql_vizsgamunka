@@ -2,7 +2,7 @@
 require_once('DbConnection.php');
 
 // adatbázis lekérdezés tömbbe
-
+//----------------------------------------------------------------------------
 class Database extends DbConnection
 {
 
@@ -26,6 +26,7 @@ class Database extends DbConnection
 }
 
 // események lekérdezése
+//----------------------------------------------------------------------------
 
 class Tura
 {
@@ -46,6 +47,7 @@ class Tura
 }
 
 // Tagok lekérdezése
+//----------------------------------------------------------------------------
 
 class Tag
 {
@@ -65,6 +67,8 @@ class Tag
 }
 
 // eseményre jelentkezések lekérdezése
+//----------------------------------------------------------------------------
+
 class Jelentkezes
 {
     private $database;
@@ -93,7 +97,8 @@ class Jelentkezes
     }*/
 }
 
-// események feltöltése
+// események feltöltése és módosítása
+//----------------------------------------------------------------------------
 
 class Szervezo extends DbConnection
 {
@@ -152,9 +157,37 @@ class Szervezo extends DbConnection
             }
         }
     }
+    public function updateTura()
+    {
+        if (isset($_POST['admintura'])) {
+            $esemenyid = filter_var($_POST['event'], FILTER_SANITIZE_ADD_SLASHES);
+            $datum = filter_var($_POST['ujdatum'], FILTER_SANITIZE_ADD_SLASHES);
+            $atir = filter_var($_POST['atir'], FILTER_SANITIZE_ADD_SLASHES);
+
+
+            $esemenyid = $this->connection->real_escape_string($esemenyid);
+            $datum = $this->connection->real_escape_string($datum);
+            $atir = $this->connection->real_escape_string($atir);
+
+            $sql7 = "UPDATE esemeny SET esemeny_datuma = '$datum',
+                                        esemeny_leiras = '$atir'
+                                  WHERE id = '$esemenyid'";
+
+            $result7 = $this->connection->query($sql7);
+            if ($result7) {
+                echo "Az esemény sikeresen módosítva!";
+            } else {
+                echo "Adatfeltöltési hiba " . $this->connection->error;
+            }
+        }
+    }
 }
 
-// visszajelzések feltöltése
+
+
+// visszajelzések feltöltése és módosítása
+//----------------------------------------------------------------------------
+
 
 class Visszajelzo extends DbConnection
 {
@@ -207,7 +240,7 @@ class Visszajelzo extends DbConnection
                     echo "Adatfeltöltési hiba " . $this->connection->error;
                 }
             } else {
-                echo "A visszajelzés már létezik az adatbázisban";
+                echo "A visszajelzés módosítva lett";
                 $valasz = $this->connection->real_escape_string($valasz);
                 $megjegyzes = $this->connection->real_escape_string($megjegyzes);
                 $esemenyid = $this->connection->real_escape_string($esemenyid);
@@ -231,35 +264,4 @@ class Visszajelzo extends DbConnection
             }
         }
     }
-    /*    public function updateJelentkezes()
-    {
-
-        if (isset($_POST['update'])) {
-            $valasz = filter_var($_POST['answer'], FILTER_SANITIZE_ADD_SLASHES);
-            $megjegyzes = filter_var($_POST['note'], FILTER_SANITIZE_ADD_SLASHES);
-            $esemenyid = $_POST['esemeny_id'];
-            $jelentkezo = $_SESSION['user'];
-            $jelentkezes_id = $_POST['jid'];
-
-
-            $sql6 =  "SELECT * FROM jelentkezes AS j 
-            LEFT JOIN tag AS t ON(j.tag_id = t.tid)
-            LEFT JOIN esemeny AS e ON(j.esemeny_id = e.id)
-            WHERE j.tag_id = '$jelentkezo' AND j.esemeny_id = "$esemenyid"
-            ORDER BY esemeny_datuma DESC, valasz ASC
-            UPDATE jelentkezes (valasz,
-                                tag_megjegyzes)
-                            VALUES ('$valasz',
-                                    '$megjegyzes')";
-
-            $result6 = $this->connection->query($sql6);
-
-
-            if ($result6) {
-                echo "A módosítás sikeresen feltöltve!";
-            } else {
-                echo "Adatfeltöltési hiba " . $this->connection->error;
-            }
-        }
-    }*/
 }
